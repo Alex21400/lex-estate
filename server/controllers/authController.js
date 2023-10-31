@@ -45,7 +45,7 @@ export const signup = asyncHandler(async (req, res) => {
 });
 
 // Login user
-export const signin = asyncHandler(async(req, res) => {
+export const signin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     if(!email || !password) {
@@ -73,16 +73,55 @@ export const signin = asyncHandler(async(req, res) => {
             expires: new Date(Date.now() + 86400),
             sameSite: 'none',
             secure: true
-        })
+        });
     }
 
     if(user && isPasswordCorrect) {
         res.status(200).json({
             username: user.username,
             email: user.email
-        })
+        });
     } else {
         res.status(400);
         throw new Error('Invalid email or password');
     }
 });
+
+// Login with google provider
+export const googleSignIn = asyncHandler(async (req, res) => {
+    const user = await User.findOne({
+        email: req.body.email
+    });
+
+    if(user) {
+        const token = generateToken(user._id);
+
+        res.cookie('access_token', token, { httpOnly: true });
+        res.status(200).json({
+            username: user.username,
+            email: user.email
+        });
+    } else {
+        const generatedPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+        
+        const name = req.body.name.concat(Math.random().toString(36).slice(-3));
+
+        const newUser = await User.create({
+            username: name,
+            email: req.body.email,
+            password: hashedPassword,
+            photo: req.body.photo
+        });
+
+        const token = generateToken(newUser._id);
+        res.cookie('access_token', token, { httpOnly: true });
+
+        if(newUser) {
+            res.status(201).json(newUser);
+        } else {
+            res.status(400);
+            throw new Error('Invalid user data.');
+        }
+    }
+})
