@@ -4,12 +4,14 @@ import { connectDB } from './config/connectDB.js';
 import userRouter from './routes/userRoute.js';
 import authRouter from './routes/authRoute.js';
 import errorHandler from './middleware/errorHandler.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 const app = express(); 
 
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use('/api/users', userRouter);

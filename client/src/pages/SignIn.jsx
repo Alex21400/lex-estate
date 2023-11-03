@@ -36,16 +36,14 @@ const SignIn = () => {
       });
 
       const data = await res.json();
-      console.log(data);
 
-      if(data.success === false) {
-        setIsLoading(false);
+      if(res.ok) {;
+        dispatch(signInSuccess(data));
+        navigate('/');
+      } else {
         dispatch(signInFailure(data.message));
-        return
+        return;
       }
-  
-      dispatch(signInSuccess(data));
-      navigate('/');
     } catch(error) {
       dispatch(signInFailure(error.message));
     }
@@ -60,7 +58,7 @@ const SignIn = () => {
         <input type="text" placeholder='Email' className='border p-3 rounded-lg' name='email' value={formData.email} onChange={(e) => handleChange(e)}/>
         <input type="password" placeholder='Password' className='border p-3 rounded-lg' name='password' value={formData.password} onChange={(e) => handleChange(e)}/>
         {error && <p className='text-red-500'>{error}</p>}
-        <button disabled={loading} className='bg-slate-600 text-white p-3 rounded-lg font-semibold hover:opacity-90' type='submit'>{!loading ? 'Sign Up' : 'Loading...'}</button>
+        <button disabled={loading} className='bg-slate-600 text-white p-3 rounded-lg font-semibold hover:opacity-90' type='submit'>{!loading ? 'Sign In' : 'Loading...'}</button>
       </form>
       <OAuth />
       <div className='flex mt-5 gap-4'>

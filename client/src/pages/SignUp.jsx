@@ -14,8 +14,8 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   }
 
   const handleSubmit = async (e) => {
@@ -33,15 +33,15 @@ const SignUp = () => {
       });
   
       const data = await res.json();
-      if(data.success === false) {
+
+      if(res.ok) {
         setIsLoading(false);
+        setError(null);
+        navigate('/');
+      } else {
         setError(data.message);
-        return
       }
-  
-      setIsLoading(false);
-      setError(null);
-      navigate('/');
+      
     } catch(error) {
       setIsLoading(false);
       setError(error.message);

@@ -1,7 +1,11 @@
-import React from 'react'
-import { HiSearch } from 'react-icons/hi'
+import React from 'react';
+import { HiSearch } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+  const { currentUser } = useSelector(state => state.user);
+
   return (
     <header className='bg-slate-100 shadow-md'>
         <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
@@ -15,14 +19,22 @@ const Header = () => {
             </form>
             <ul className='flex items-center gap-4'>
                 <li className='hidden sm:inline hover:text-slate-600 font-semibold text-xl'>
-                    <a href="/">Home</a>
+                    <Link to={"/"}>Home</Link>
                 </li>
                 <li className='hidden sm:inline hover:text-slate-600 font-semibold text-xl'>
-                    <a href="/about">About</a>
+                    <Link to={"/about"}>About</Link>
                 </li>
-                <li className='hidden sm:inline hover:text-slate-600 font-semibold text-xl'>
-                    <a href="/sign-in">Sign In</a>
-                </li>
+                {currentUser ? (
+                    <li>
+                        <Link to={"/user-profile"}>
+                            <img className='rounded-full h-8 w-8 object-cover cursor-pointer' src={currentUser.photo} alt={currentUser.username} />
+                        </Link>
+                    </li>
+                ) : (
+                    <li className='hidden sm:inline hover:text-slate-600 font-semibold text-xl'>
+                    <   Link to={"/sign-in"}>Sign In</Link>
+                    </li>
+                )}
             </ul>
         </div>
     </header>

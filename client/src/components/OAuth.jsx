@@ -3,7 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
 import { useDispatch } from 'react-redux';
-import { signInSuccess } from '../redux/user/userSlice';
+import { signInFailure, signInSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const OAuth = () => {
@@ -30,8 +30,13 @@ const OAuth = () => {
         });
 
         const data = await res.json();
-        dispatch(signInSuccess(data));
-        navigate('/');
+        
+        if(res.ok) {
+          dispatch(signInSuccess(data));
+          navigate('/');
+        } else {
+          dispatch(signInFailure(data.message));
+        }
     } catch(error) {
         console.log(error.message);
     }

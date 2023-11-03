@@ -37,7 +37,13 @@ export const signup = asyncHandler(async (req, res) => {
     });
 
     if(newUser) {
-        res.status(201).json(newUser);
+        res.status(201).json({
+            _id: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            photo: newUser.photo,
+            createdAt: newUser.createdAt,
+        });
     } else {
         res.status(400);
         throw new Error('Invalid user data');
@@ -78,8 +84,10 @@ export const signin = asyncHandler(async (req, res) => {
 
     if(user && isPasswordCorrect) {
         res.status(200).json({
+            id: user._id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            photo: user.photo
         });
     } else {
         res.status(400);
@@ -118,10 +126,29 @@ export const googleSignIn = asyncHandler(async (req, res) => {
         res.cookie('access_token', token, { httpOnly: true });
 
         if(newUser) {
-            res.status(201).json(newUser);
+            res.status(201).json({
+                _id: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+                photo: newUser.photo,
+            });
         } else {
             res.status(400);
             throw new Error('Invalid user data.');
         }
     }
-})
+});
+
+// logout user
+export const signoutUser = asyncHandler(async (req, res) => {
+    // make the cookie expire
+    res.cookie('access_token', '', {
+        path: '/',
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: 'none',
+        secure: true
+    });
+
+    return res.status(200).json({ message: 'Signout successful' });
+});
