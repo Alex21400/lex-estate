@@ -84,7 +84,7 @@ export const signin = asyncHandler(async (req, res) => {
 
     if(user && isPasswordCorrect) {
         res.status(200).json({
-            id: user._id,
+            _id: user._id,
             username: user.username,
             email: user.email,
             photo: user.photo

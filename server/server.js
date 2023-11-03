@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/connectDB.js';
 import userRouter from './routes/userRoute.js';
 import authRouter from './routes/authRoute.js';
+import listingRouter from './routes/listingRoute.js';
 import errorHandler from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 // routes
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/listings', listingRouter);
 
 // error middleware
 app.use(errorHandler);
