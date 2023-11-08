@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import User from "../models/User.js";
 import bcrypt from 'bcryptjs';
+import Listing from '../models/Listing.js';
 
 export const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
@@ -53,4 +54,17 @@ export const deleteUser = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('User not found.');
     }
+});
+
+// Get user's listings
+export const getUserListings = asyncHandler(async (req, res) => {
+    const user = await req.user;
+
+    if(!user) {
+        res.status(403).json({ message: 'Not authorized. Please log in.'})
+    }
+
+    const listings = await Listing.find({ userId: user._id });
+
+    res.status(200).json(listings);  
 });

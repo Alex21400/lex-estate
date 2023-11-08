@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
@@ -134,6 +135,7 @@ const UserProfile = () => {
             <input type="text" defaultValue={currentUser.email} placeholder='Email' id='email' className='border p-3 rounded-lg' disabled />
             <input type="password" name='password' id='password' className='border p-3 rounded-lg' onChange={(e) => handleChange(e)}/>
             <button type='submit' className='bg-slate-600 p-3 rounded-lg text-white font-semibold hover:opacity-90 disabled:opacity-80'>Update</button>
+            <Link to={'/create-listing'} className='bg-transarept border-2 border-slate-600 p-3 rounded-lg text-slate-600 font-semibold hover:opacity-90 text-center'>Create a Listing</Link>
         </form>
 
         <div className='flex justify-between my-3'>
