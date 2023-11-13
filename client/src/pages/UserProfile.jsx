@@ -118,6 +118,9 @@ const UserProfile = () => {
 
   return (
     <div className='p-3 max-w-lg mx-auto bg-slate-50'>
+        <Link to={`/user-profile/userListings`} className='text-blue-700 text-lg hover:underline'>
+          Your Listings
+        </Link>
         <h1 className='text-3xl font-semibold text-center my-7'>User Profile</h1>
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>

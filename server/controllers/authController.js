@@ -73,13 +73,7 @@ export const signin = asyncHandler(async (req, res) => {
     const token = generateToken(user._id);
 
     if(isPasswordCorrect) {
-        res.cookie('access_token', token, {
-            path: '/',
-            httpOnly: true,
-            expires: new Date(Date.now() + 86400),
-            sameSite: 'none',
-            secure: true
-        });
+        res.cookie('access_token', token, { httpOnly: true });
     }
 
     if(user && isPasswordCorrect) {
@@ -87,7 +81,7 @@ export const signin = asyncHandler(async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
-            photo: user.photo
+            photo: user.photo,
         });
     } else {
         res.status(400);
@@ -152,3 +146,5 @@ export const signoutUser = asyncHandler(async (req, res) => {
 
     return res.status(200).json({ message: 'Signout successful' });
 });
+
+

@@ -40,6 +40,7 @@ const SignUp = () => {
         navigate('/');
       } else {
         setError(data.message);
+        setIsLoading(false);
       }
       
     } catch(error) {
