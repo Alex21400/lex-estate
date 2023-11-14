@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ListingCard from '../components/ListingCard'
 
 const initialState = {
     searchTerm: '',
@@ -16,6 +17,9 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
   const [error, setError] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+
+  console.log(listings);
 
   const navigate = useNavigate();
 
@@ -72,6 +76,7 @@ const Search = () => {
     const fetchListings = async () => {
         try {
             setLoading(true);
+            setShowMore(false);
 
             const searchQuery = urlParams.toString();
             const res = await fetch(`/api/listings?${searchQuery}`);
@@ -80,8 +85,15 @@ const Search = () => {
             if(res.ok) {
                 setLoading(false);
                 setListings(data);
+                
+                if(data.length > 8) {
+                    setShowMore(true);
+                } else {
+                    setShowMore(false);
+                }
             }
         } catch(error) {
+            setLoading(false);
             setError(error.message);
         }
     }
@@ -110,6 +122,26 @@ const Search = () => {
         const order = value.split('_')[1] || 'desc';
 
         setFormData({ ...formData, sort, order });
+    }
+  }
+
+  // Show more button function
+  const onShowMoreClick = async () => {
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set('startIndex', startIndex);
+    const searchQuery = urlParams.toString();
+
+    const res = await fetch(`/api/listings?${searchQuery}`);
+    const data = await res.json();
+
+    if(res.ok) {
+        if(data.length < 9) {
+            setShowMore(false);
+        }
+
+        setListings([...listings, data]);
     }
   }
 
@@ -175,9 +207,24 @@ const Search = () => {
             </form>
         </div>
         <div>
-            <h2 className='text-slate-600 text-2xl lg:text-3xl font-medium  text-center my-4'>Listing Results:</h2>
+            <h2 className='text-slate-600 text-2xl lg:text-3xl font-medium  text-center my-6'>Listing Results:</h2>
 
+            <div className='flex flex-wrap gap-4 px-12 mt-6'>
+                {!loading && listings.length === 0 && (
+                    <p className='text-xl text-slate-600 my-4 text-center'>No listings found! Try to search for something else.</p>
+                )}
+
+                {!loading && listings.length > 0 && listings.map(listing => {
+                    return (
+                        <ListingCard key={listing._id} listing={listing} />
+                    )
+                })}
+
+            </div>
         </div>
+        {showMore && (
+            <button onClick={() => onShowMoreClick()} className='bg-slate-500 text-white px-4 py-2 rounded-lg max-w-max mx-auto my-7 hover:opacity-90'>Show More</button>
+        )}
     </main>
   )
 }
