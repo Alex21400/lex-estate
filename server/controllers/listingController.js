@@ -78,13 +78,18 @@ export const getListings = asyncHandler(async (req, res) => {
     const searchTerm = req.query.searchTerm || '';
     const sort = req.query.sort || 'createdAt';
     const order = req.query.order || 'desc';
+    
+    const minPrice = req.query.minPrice || 0;
+    const maxPrice = req.query.maxPrice || 1000000000;
 
     const listings = await Listing.find({
-        title: { $regex: searchTerm, $options: 'i' },
+        // title: { $regex: searchTerm, $options: 'i' },
+        $or: [ { title: { $regex: searchTerm, $options: 'i'}}, { address: { $regex: searchTerm, $options: 'i'}}],
         offer,
         furnished,
         parking,
         type,
+        regularPrice: { $gt: minPrice, $lt: maxPrice }
     })
     .sort({
         [sort]: order

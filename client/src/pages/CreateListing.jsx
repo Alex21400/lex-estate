@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getDownloadURL, ref, uploadBytesResumable, getStorage } from 'firebase/storage';
 import { app } from '../firebase';
-import { GrFormClose } from 'react-icons/gr';
+import { IoClose } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -80,12 +80,11 @@ const CreateListing = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ ... formData, userId: currentUser.id })
+            body: JSON.stringify({ ... formData, userId: currentUser._id })
         });
 
         const data = await res.json();
         
-
         if(res.ok) {
             setFormLoading(false);
             setFormError(null);
@@ -161,14 +160,14 @@ const CreateListing = () => {
   }
 
   return (
-    <main className='p-4 max-w-4xl mx-auto'>
+    <main className='p-4 max-w-4xl mx-auto mt-20'>
         <h2 className='text-3xl font-semibold text-center my-7'>Create Listing</h2>
         <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
             <div className='flex flex-col gap-4 flex-1'>
                 <input 
                     type="text" 
                     placeholder='Title' 
-                    className='border p-3 rounded-lg' 
+                    className='border p-3 rounded-lg bg-slate-50 text-black-200' 
                     id='title' 
                     maxLength='100' 
                     minLength='10' 
@@ -180,14 +179,14 @@ const CreateListing = () => {
                     placeholder='Description' 
                     id="description" 
                     rows="10" 
-                    className='border p-3 rounded-lg' 
+                    className='border p-3 rounded-lg bg-slate-50 text-black-200' 
                     required 
                     onChange={handleChange}
                     value={formData.description}/>
                 <input 
                     type="text" 
                     placeholder='Address' 
-                    className='border p-3 rounded-lg' 
+                    className='border p-3 rounded-lg bg-slate-50 text-black-200' 
                     id='address' 
                     maxLength='100' 
                     minLength='10' 
@@ -220,7 +219,7 @@ const CreateListing = () => {
                 <div className='flex gap-4 flex-wrap'>
                     <div className='flex items-center gap-2'>
                         <input 
-                            className='p-3 border border-gray-300 rounded-lg' 
+                            className='p-3 border border-gray-300 rounded-lg bg-slate-50 text-black-200' 
                             type="number" 
                             id="bedrooms" 
                             min='1' 
@@ -232,7 +231,7 @@ const CreateListing = () => {
                     </div>
                     <div className='flex items-center gap-2'>
                         <input 
-                            className='p-3 border border-gray-300 rounded-lg' 
+                            className='p-3 border border-gray-300 rounded-lg bg-slate-50 text-black-200' 
                             type="number" 
                             id="bathrooms" 
                             min='1' 
@@ -244,9 +243,9 @@ const CreateListing = () => {
                     </div>
                     <div className='flex items-center gap-2'>
                         <input 
-                            className='p-3 border border-gray-300 rounded-lg w-15' 
+                            className='p-3 border border-gray-300 rounded-lg w-15 bg-slate-50 text-black-200' 
                             min='10' 
-                            max='10000000' 
+                            max='1000000000' 
                             type="number" 
                             id="regularPrice" 
                             required 
@@ -254,15 +253,15 @@ const CreateListing = () => {
                             value={formData.regularPrice} />
                         <div className='flex flex-col'>
                             <p>Regular Price</p>
-                            <span className='text-md text-gray-600'>{formData.type === 'rent' ? '($ / Month)' : '$'}</span>
+                            <span className='text-md text-secondary'>{formData.type === 'rent' ? '($ / Month)' : '$'}</span>
                         </div>
                     </div>
                     {formData.offer && (
                         <div className='flex items-center gap-2'>
                         <input 
-                            className='p-3 border border-gray-300 rounded-lg w-15' 
+                            className='p-3 border border-gray-300 rounded-lg w-15 bg-slate-50 text-black-200' 
                             min='10' 
-                            max='10000000' 
+                            max='1000000000' 
                             type="number" 
                             id="discountPrice"
                             required 
@@ -270,7 +269,7 @@ const CreateListing = () => {
                             value={formData.discountPrice}/>
                         <div className='flex flex-col'>
                             <p>Discount Price</p>
-                            <span className='text-md text-gray-600'>{formData.type === 'rent' ? '($ / Month)' : '$'}</span>
+                            <span className='text-md text-secondary'>{formData.type === 'rent' ? '($ / Month)' : '$'}</span>
                         </div>
                     </div>
                     )}
@@ -279,11 +278,11 @@ const CreateListing = () => {
             <div className='flex flex-col gap-4 flex-1'>
                 <p className='font-semibold'>
                     Images: 
-                    <span className='font-normal text-gray-600 ml-2'>The first image will be cover image (max-6)</span>
+                    <span className='font-normal text-secondary ml-2'>The first image will be cover image (max-6)</span>
                 </p>
                 <div className='flex gap-4'>
                     <input type="file" className='p-2 border border-gray-300 rounded-lg w-full' accept='image/*' multiple onChange={(e) => setFiles(e.target.files)} />
-                    <button type='button' disabled={loading} className='px-4 py-2 border border-slate-500 text-slate-500 rounded-lg font-medium hover:opacity-90' onClick={handleImageUpload}>{!loading ? 'Upload' : 'Uploading...'}</button>
+                    <button type='button' disabled={loading} className='px-4 py-2 border border-secondary text-secondary rounded-lg font-medium hover:opacity-90' onClick={handleImageUpload}>{!loading ? 'Upload' : 'Uploading...'}</button>
                 </div>
                 <p className='text-red-700'>{imageUploadError && imageUploadError}</p>
                 {
@@ -291,12 +290,12 @@ const CreateListing = () => {
                         return (
                             <div className='flex items-center justify-between p-3 border' key={index}>
                                 <img src={url} alt='image' className='w-20 h-20 object-contain rounded-lg' />
-                                <GrFormClose className='cursor-pointer' size={28} onClick={() => handleRemoveImage(index)} />
+                                <IoClose className='cursor-pointer' color='white-200' size={28} onClick={() => handleRemoveImage(index)} />
                             </div>    
                         )
                     })
                 }
-                <button type='submit' className='bg-slate-600 p-3 rounded-lg text-white font-semibold hover:opacity-90 disabled:opacity-80' disabled={formLoading || loading}>{!formLoading ? 'Create Listing' : 'Creating...'}</button>
+                <button type='submit' className='bg-primary p-3 rounded-lg text-white font-semibold hover:opacity-90 disabled:opacity-80' disabled={formLoading || loading}>{!formLoading ? 'Create Listing' : 'Creating...'}</button>
 
                 {formError && (
                 <p className='text-red-700'>{formError}</p>

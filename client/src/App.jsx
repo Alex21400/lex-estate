@@ -12,6 +12,8 @@ import UserListings from './pages/UserListings';
 import UpdateListing from './pages/UpdateListing';
 import Listing from './pages/Listing';
 import Search from './pages/Search';
+import Listings from './pages/Listings';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -23,7 +25,7 @@ function App() {
           <Route path='/listings/:id' element={<Listing />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
-          <Route path='/search' element={<Search />} />
+          <Route path='/listings' element={<Listings />} />
           <Route element={<PrivateRoute />}>
             <Route path='/user-profile' element={<UserProfile />} />
             <Route path='/create-listing' element={<CreateListing />} />
@@ -31,6 +33,7 @@ function App() {
             <Route path='/user-profile/userListings' element={<UserListings />} />
           </Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }

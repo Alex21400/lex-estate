@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', getListings);
 router.post('/', createListing);
-router.get('/:id', protect, getListing);
+router.get('/:id', getListing);
 router.delete('/:id',protect, deleteListing);
 router.patch('/:id', protect, updateListing);
 
