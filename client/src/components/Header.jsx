@@ -140,12 +140,12 @@ const Header = () => {
                     ) : (
                         <>
                             <li 
-                                className='hidden sm:inline border-blue border-2 text-blue font-medium px-4 py-2 rounded-lg text-lg'
+                                className='font-medium text-lg'
                                 onClick={() => setMobileMenu(false)}>
                                 <Link to={"/sign-up"}>Sign Up</Link>
                             </li>
                             <li 
-                                className='hidden sm:inline bg-blue text-white font-medium px-4 py-2 rounded-lg text-lg'
+                                className='font-medium text-lg'
                                 onClick={() => setMobileMenu(false)}>
                                 <Link to={"/sign-in"}>Sign In</Link>
                             </li>  
