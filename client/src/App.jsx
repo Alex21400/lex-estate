@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Profile from './pages/Profile';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import UserProfile from './pages/UserProfile';
@@ -11,7 +10,6 @@ import CreateListing from './pages/CreateListing';
 import UserListings from './pages/UserListings';
 import UpdateListing from './pages/UpdateListing';
 import Listing from './pages/Listing';
-import Search from './pages/Search';
 import Listings from './pages/Listings';
 import Footer from './components/Footer';
 

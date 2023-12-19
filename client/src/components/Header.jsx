@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { HiSearch } from 'react-icons/hi';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
